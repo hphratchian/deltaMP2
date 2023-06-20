@@ -1,4 +1,4 @@
-      module test_mod
+      module integraltransformation_mod
 !
 !     This module supports the program scfEnergyTerms.
 !
@@ -27,17 +27,18 @@
 !
 !
 !PROCEDURE commandLineArgs
-      subroutine commandLineArgs(iPrint,matrixFilename,doN8,doSlowN5,  &
-        doRegularN5,fail)
+      subroutine commandLineArgs(iPrint,nOMP,matrixFilename,doN8,  &
+        doSlowN5,doRegularN5,useBLAS,fail)
 !
 !     This subroutine is used to process the command line arguments.
 !
-      integer,intent(OUT)::iPrint
+      integer,intent(OUT)::iPrint,nOMP
       character(len=512),intent(OUT)::matrixFilename
-      logical,intent(OUT)::doN8,doSlowN5,doRegularN5,fail
+      logical,intent(OUT)::doN8,doSlowN5,doRegularN5,useBLAS,fail
 !
       integer::nCommands,nMatrixFilenames,i
       character(len=512)::tmpString,lowercase
+      logical::getNProc
 !
 !     Format statements.
 !
@@ -47,11 +48,14 @@
 !     Set defaults.
 !
       iPrint = 0
+      nOMP = 1
       doN8 = .false.
-      doSlowN5 = .true.
-      doRegularN5 = .true.
+      doSlowN5 = .false.
+      doRegularN5 = .false.
+      useBLAS = .true.
       fail = .false.
       nMatrixFilenames = 0
+      getNProc = .false.
 !
 !     Determine the number of command line arguments. Then, loop through the
 !     list of arguments to set options.
@@ -59,10 +63,18 @@
       nCommands = command_argument_count()
       do i = 1,nCommands
         call get_command_argument(i,tmpString)
-        write(*,*) i,TRIM(tmpString)
+        if(getNProc) then
+          read(tmpString,'(i)') nOMP
+          getNProc = .false.
+          cycle
+        endIf
         if(tmpString(1:1).eq.'-') then
           call String_Change_Case(tmpString(2:),'l',lowercase)
           select case(TRIM(lowercase))
+          case('debug')
+            iPrint = 1
+          case('nproc')
+            getNProc = .true.
           case('don8')
             doN8 = .true.
           case('skipn8')
@@ -75,8 +87,10 @@
             doRegularN5 = .true.
           case('skipregularn5')
             doRegularN5 = .false.
-          case('debug')
-            iPrint = 1
+          case('useblas')
+            useBLAS = .true.
+          case('usematmul')
+            useBLAS = .false.
           case default
             fail = .true.
             write(iOut,9000) TRIM(tmpString)
@@ -138,4 +152,4 @@
       end subroutine integralTransformationN8sameSpin
 !
 !
-      end module test_mod
+      end module integraltransformation_mod
