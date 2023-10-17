@@ -1,5 +1,6 @@
+INCLUDE 'mqc_binary.F03'
 INCLUDE 'deltamp2_mod.f03'
-      program deltaMP2
+      Program deltaMP2
 !
 !     This program reads AO integrals from a Gaussian matrix file and times
 !     AO-to-MO integral transformations.
@@ -9,7 +10,7 @@ INCLUDE 'deltamp2_mod.f03'
 !
 !     USE Connections
 !
-      use deltamp2_mod
+      use integraltransformation_mod
 !
 !     Variable Declarations
 !
@@ -52,7 +53,7 @@ INCLUDE 'deltamp2_mod.f03'
         call mqc_error('MQCPack version is too old.')
 !
 !     Open the Gaussian matrix file and load the number of atomic centers.
-
+!
       nCommands = command_argument_count()
       if(nCommands.eq.0)  &
         call mqc_error('No command line arguments provided. The input Gaussian matrix file name is required.')
@@ -79,10 +80,28 @@ INCLUDE 'deltamp2_mod.f03'
       flush(iOut)
       moEnergiesAlpha = mqcTmpArray
       if(GMatrixFile%isUnrestricted()) then
-        call mqc_error('UHF/UKS NYI.')
+        call mqc_error('UMP2 NYI.')
       else
         moEnergiesBeta = moEnergiesAlpha
       endIf
+!
+!     Build the list of determinants used in the MP2 expansion. The first
+!     determinant string is the reference. For now, we only consider RMP2
+!     calculations. This means that we need to build a list of opposite=spin
+!     doubles and same-spin doubles. The first version of the program builds all
+!     of these determinants into the list of strings explictly, without any
+!     regard for the permutation symmetries available.
+!
+      
+      
+
+
+
+!
+
+
+
+
 !
 !     Load the MO coefficients.
 !
