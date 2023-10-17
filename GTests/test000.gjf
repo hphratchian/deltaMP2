@@ -1,0 +1,19 @@
+%chk=test000
+#p test geom=modela mp2=full output=(mat,AO2ElectronIntegrals,MO2ElectronIntegrals) tran=full window=full
+int=noraff nosymm
+gen
+
+test
+
+0   1
+li h
+
+1  0
+sto-3g
+****
+2  0
+sto-3g
+****
+
+test000.mat
+

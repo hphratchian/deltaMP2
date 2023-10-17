@@ -1,0 +1,11 @@
+%chk=test003
+#p test geom=modela mp2=full aug-cc-pvtz output=(mat,AO2ElectronIntegrals,MO2ElectronIntegrals) tran=full window=full
+int=noraff nosymm
+
+test
+
+ 0  1
+c h h h me
+
+test003.mat
+

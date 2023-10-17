@@ -1,4 +1,4 @@
-      module integraltransformation_mod
+      module deltamp2_mod
 !
 !     This module supports the program scfEnergyTerms.
 !
@@ -152,4 +152,4 @@
       end subroutine integralTransformationN8sameSpin
 !
 !
-      end module integraltransformation_mod
+      end module deltamp2_mod

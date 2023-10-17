@@ -1,0 +1,11 @@
+%chk=test002
+#p test mp2=full aug-cc-pv5z output=(mat,AO2ElectronIntegrals,MO2ElectronIntegrals) tran=full window=full
+int=noraff nosymm
+
+test
+
+-1  1
+f
+
+test002.mat
+

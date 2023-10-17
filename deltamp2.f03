@@ -1,5 +1,5 @@
-INCLUDE 'integraltransformation_mod.f03'
-      Program integraltransformation
+INCLUDE 'deltamp2_mod.f03'
+      program deltaMP2
 !
 !     This program reads AO integrals from a Gaussian matrix file and times
 !     AO-to-MO integral transformations.
@@ -9,7 +9,7 @@ INCLUDE 'integraltransformation_mod.f03'
 !
 !     USE Connections
 !
-      use integraltransformation_mod
+      use deltamp2_mod
 !
 !     Variable Declarations
 !
@@ -568,7 +568,7 @@ INCLUDE 'integraltransformation_mod.f03'
       call cpu_time(timeEnd)
       write(iOut,5000) 'TOTAL JOB TIME',timeEnd-timeStart
       write(iOut,8999)
-      end program integraltransformation
+      end program deltaMP2
 
 
       subroutine dpReshape4(N1,N2,N3,N4,arrayIn,r4ArrayOut)
