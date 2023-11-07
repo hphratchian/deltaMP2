@@ -1,7 +1,7 @@
 #
 # This is a simple makefile for building spin-squared calculation code.
-#
-MQCDir       = $(mqcinstall)
+# Specify where your MQC_directory is built
+MQCDir       = $(mqc_install)
 MQCMODS      = $(MQCDir)/PGI/mod
 MQCLIB       = $(MQCDir)/PGI/lib
 LIBS         = -llapack -lblas -L$(MQCLIB)
@@ -30,5 +30,8 @@ all: deltamp2.exe
 # Generic rule for building general executable program (*.exe) from a standard
 # f03 source (*.f03) file.
 #
-%.exe: %.f03 %_mod.f03 $(MQCLIB)/libmqc.a
+%.exe: %.f03 %_mod.f03 
 	$(RunF) $(LIBS) $(Prof) -mp -I$(MQCMODS) -o $*.exe $*.f03 $(MQCLIB)/libmqc.a
+clean:
+	rm -rf *.o *.exe *.mod
+

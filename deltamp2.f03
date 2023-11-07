@@ -1,6 +1,5 @@
-INCLUDE 'mqc_binary.F03'
 INCLUDE 'deltamp2_mod.f03'
-      Program deltaMP2
+      program deltaMP2
 !
 !     This program reads AO integrals from a Gaussian matrix file and times
 !     AO-to-MO integral transformations.
@@ -10,7 +9,7 @@ INCLUDE 'deltamp2_mod.f03'
 !
 !     USE Connections
 !
-      use integraltransformation_mod
+      use deltamp2_mod
 !
 !     Variable Declarations
 !
@@ -53,7 +52,7 @@ INCLUDE 'deltamp2_mod.f03'
         call mqc_error('MQCPack version is too old.')
 !
 !     Open the Gaussian matrix file and load the number of atomic centers.
-!
+
       nCommands = command_argument_count()
       if(nCommands.eq.0)  &
         call mqc_error('No command line arguments provided. The input Gaussian matrix file name is required.')
@@ -80,28 +79,10 @@ INCLUDE 'deltamp2_mod.f03'
       flush(iOut)
       moEnergiesAlpha = mqcTmpArray
       if(GMatrixFile%isUnrestricted()) then
-        call mqc_error('UMP2 NYI.')
+        call mqc_error('UHF/UKS NYI.')
       else
         moEnergiesBeta = moEnergiesAlpha
       endIf
-!
-!     Build the list of determinants used in the MP2 expansion. The first
-!     determinant string is the reference. For now, we only consider RMP2
-!     calculations. This means that we need to build a list of opposite=spin
-!     doubles and same-spin doubles. The first version of the program builds all
-!     of these determinants into the list of strings explictly, without any
-!     regard for the permutation symmetries available.
-!
-      
-      
-
-
-
-!
-
-
-
-
 !
 !     Load the MO coefficients.
 !
@@ -134,8 +115,8 @@ INCLUDE 'deltamp2_mod.f03'
       call dpReshape4(nBasis,nBasis,nBasis,nBasis,ERIs%realArray,aoInts)
 !hph-
 
-      if(iPrint.ge.2) call mqc_print_rank4Tensor_array_real(iOut,  &
-        aoInts,header='Intrinsic AO Integrals')
+      if(iPrint.ge.2) call mqc_print_rank4Tensor_array_real(aoInts, &
+      IOut,header='Intrinsic AO Integrals')
 
       write(*,*)' Hrant - FLAG C'
       flush(iOut)
@@ -331,8 +312,8 @@ INCLUDE 'deltamp2_mod.f03'
         write(iOut,5000) 'Quarter Transformation 4',time1-time0
         flush(iOut)
         DeAllocate(partialInts1)
-        if(iPrint.ge.1) call mqc_print_rank4Tensor_array_real(iOut,  &
-          moInts,header='Transformed MO Integrals 2')
+        !if(iPrint.ge.1) call mqc_print_rank4Tensor_array_real(iOut,  &
+        !  moInts,header='Transformed MO Integrals 2')
       endIf
 !
 !     Load up AA MO ERIs from the matrixfile and print them out to ensure the
@@ -552,7 +533,13 @@ INCLUDE 'deltamp2_mod.f03'
               numerator = moInts(i,a,j,b) - moInts(i,b,j,a)
               numerator = numerator*numerator
               if(iPrint.ge.1) write(*,*)' num, denom = ',numerator,deltaIJAB
+              write(*,*) " Andrew i = ",i 
+              write(*,*) " Andrew j = ",j 
+              write(*,*) " Andrew a = ",a 
+              write(*,*) " Andrew b = ",b 
               E2AA = E2AA + numerator/(float(4)*deltaIJAB)
+              write(*,*) " Andrew E2AA = ",E2AA
+              write(*,*) 
             endDo
           endDo
         endDo

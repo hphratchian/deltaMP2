@@ -1,8 +1,8 @@
       module deltamp2_mod
 !
-!     This module supports the program deltaMP2.
+!     This module supports the program scfEnergyTerms.
 !
-!     -H. P. Hratchian, 2023.
+!     -H. P. Hratchian, 2020.
 !
 !
 !     USE Connections
