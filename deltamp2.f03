@@ -84,6 +84,24 @@ INCLUDE 'deltamp2_mod.f03'
         moEnergiesBeta = moEnergiesAlpha
       endIf
 !
+!     Build the list of determinants used in the MP2 expansion. The first
+!     determinant string is the reference. For now, we only consider RMP2
+!     calculations. This means that we need to build a list of opposite=spin
+!     doubles and same-spin doubles. The first version of the program builds all
+!     of these determinants into the list of strings explictly, without any
+!     regard for the permutation symmetries available.
+!
+      
+      
+
+
+
+!
+
+
+
+
+!
 !     Load the MO coefficients.
 !
       write(*,*)' Hrant -  isUnrestricted: ',GMatrixFile%isUnrestricted()
@@ -533,12 +551,7 @@ INCLUDE 'deltamp2_mod.f03'
               numerator = moInts(i,a,j,b) - moInts(i,b,j,a)
               numerator = numerator*numerator
               if(iPrint.ge.1) write(*,*)' num, denom = ',numerator,deltaIJAB
-              write(*,*) " Andrew i = ",i 
-              write(*,*) " Andrew j = ",j 
-              write(*,*) " Andrew a = ",a 
-              write(*,*) " Andrew b = ",b 
               E2AA = E2AA + numerator/(float(4)*deltaIJAB)
-              write(*,*) " Andrew E2AA = ",E2AA
               write(*,*) 
             endDo
           endDo
