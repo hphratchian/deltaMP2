@@ -1,6 +1,5 @@
-INCLUDE 'mqc_binary.F03'
 INCLUDE 'deltamp2_mod.f03'
-      Program deltaMP2
+      program deltaMP2
 !
 !     This program reads AO integrals from a Gaussian matrix file and times
 !     AO-to-MO integral transformations.
@@ -10,7 +9,7 @@ INCLUDE 'deltamp2_mod.f03'
 !
 !     USE Connections
 !
-      use integraltransformation_mod
+      use deltamp2_mod
 !
 !     Variable Declarations
 !
@@ -33,7 +32,7 @@ INCLUDE 'deltamp2_mod.f03'
 !
 !     Format Statements
 !
- 1000 Format(1x,'Enter Test Program integralTransformation.')
+ 1000 Format(1x,'Enter Test Program DeltaMP2.')
  1010 Format(1x,'Matrix File: ',A,/)
  1020 Format(1x,'Use ',I3,' shared memory processors.')
  1100 Format(1x,'nAtoms    =',I4,6x,'nBasis  =',I4,6x,'nBasisUse=',I4,/,  &
@@ -43,7 +42,7 @@ INCLUDE 'deltamp2_mod.f03'
  2000 Format(1x,'<',I3,',',I3,' || ',I3,',',I3,' > ... pq=',I3,'  rs=',I3,'  pqrs=',I3)
  3000 Format(/,1x,'E(2)-SS = ',f15.10,' a.u.',4x,'E(2)-OS = ',f15.10,' a.u.')
  5000 Format(1x,'Time (',A,'): ',f8.1,' s.')
- 8999 Format(/,1x,'END OF PROGRAM integralTransformation.')
+ 8999 Format(/,1x,'END OF PROGRAM DeltaMP2.')
 !
 !
       call cpu_time(timeStart)
@@ -53,7 +52,7 @@ INCLUDE 'deltamp2_mod.f03'
         call mqc_error('MQCPack version is too old.')
 !
 !     Open the Gaussian matrix file and load the number of atomic centers.
-!
+
       nCommands = command_argument_count()
       if(nCommands.eq.0)  &
         call mqc_error('No command line arguments provided. The input Gaussian matrix file name is required.')
@@ -80,7 +79,7 @@ INCLUDE 'deltamp2_mod.f03'
       flush(iOut)
       moEnergiesAlpha = mqcTmpArray
       if(GMatrixFile%isUnrestricted()) then
-        call mqc_error('UMP2 NYI.')
+        call mqc_error('UHF/UKS NYI.')
       else
         moEnergiesBeta = moEnergiesAlpha
       endIf
@@ -134,8 +133,8 @@ INCLUDE 'deltamp2_mod.f03'
       call dpReshape4(nBasis,nBasis,nBasis,nBasis,ERIs%realArray,aoInts)
 !hph-
 
-      if(iPrint.ge.2) call mqc_print_rank4Tensor_array_real(iOut,  &
-        aoInts,header='Intrinsic AO Integrals')
+      if(iPrint.ge.2) call mqc_print_rank4Tensor_array_real(aoInts, &
+      IOut,header='Intrinsic AO Integrals')
 
       write(*,*)' Hrant - FLAG C'
       flush(iOut)
@@ -331,8 +330,8 @@ INCLUDE 'deltamp2_mod.f03'
         write(iOut,5000) 'Quarter Transformation 4',time1-time0
         flush(iOut)
         DeAllocate(partialInts1)
-        if(iPrint.ge.1) call mqc_print_rank4Tensor_array_real(iOut,  &
-          moInts,header='Transformed MO Integrals 2')
+        !if(iPrint.ge.1) call mqc_print_rank4Tensor_array_real(moInts, &
+        !  iOut,header='Transformed MO Integrals 2')
       endIf
 !
 !     Load up AA MO ERIs from the matrixfile and print them out to ensure the
