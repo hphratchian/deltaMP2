@@ -32,7 +32,7 @@ INCLUDE 'deltamp2_mod.f03'
 !
 !     Format Statements
 !
- 1000 Format(1x,'Enter Test Program integralTransformation.')
+ 1000 Format(1x,'Enter Test Program DeltaMP2.')
  1010 Format(1x,'Matrix File: ',A,/)
  1020 Format(1x,'Use ',I3,' shared memory processors.')
  1100 Format(1x,'nAtoms    =',I4,6x,'nBasis  =',I4,6x,'nBasisUse=',I4,/,  &
@@ -42,7 +42,7 @@ INCLUDE 'deltamp2_mod.f03'
  2000 Format(1x,'<',I3,',',I3,' || ',I3,',',I3,' > ... pq=',I3,'  rs=',I3,'  pqrs=',I3)
  3000 Format(/,1x,'E(2)-SS = ',f15.10,' a.u.',4x,'E(2)-OS = ',f15.10,' a.u.')
  5000 Format(1x,'Time (',A,'): ',f8.1,' s.')
- 8999 Format(/,1x,'END OF PROGRAM integralTransformation.')
+ 8999 Format(/,1x,'END OF PROGRAM DeltaMP2.')
 !
 !
       call cpu_time(timeStart)
@@ -330,8 +330,8 @@ INCLUDE 'deltamp2_mod.f03'
         write(iOut,5000) 'Quarter Transformation 4',time1-time0
         flush(iOut)
         DeAllocate(partialInts1)
-        !if(iPrint.ge.1) call mqc_print_rank4Tensor_array_real(iOut,  &
-        !  moInts,header='Transformed MO Integrals 2')
+        !if(iPrint.ge.1) call mqc_print_rank4Tensor_array_real(moInts, &
+        !  iOut,header='Transformed MO Integrals 2')
       endIf
 !
 !     Load up AA MO ERIs from the matrixfile and print them out to ensure the
@@ -552,7 +552,6 @@ INCLUDE 'deltamp2_mod.f03'
               numerator = numerator*numerator
               if(iPrint.ge.1) write(*,*)' num, denom = ',numerator,deltaIJAB
               E2AA = E2AA + numerator/(float(4)*deltaIJAB)
-              write(*,*) 
             endDo
           endDo
         endDo
